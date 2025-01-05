@@ -17,10 +17,10 @@
 
 // // // MySQL connection configuration
 // // const connection = mysql.createConnection({
-// //     host: 'localhost',
-// //     user: 'root',
-// //     password: 'Osh@2000',
-// //     database: 'helpdesk'
+// //     host: '',
+// //     user: '',
+// //     password: '',
+// //     database: ''
 // // });
 
 // // // Connect to MySQL database
