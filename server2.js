@@ -17,10 +17,10 @@
 
 // // // MySQL connection configuration
 // // const connection = mysql.createConnection({
-// //     host: '',
-// //     user: '',
-// //     password: '',
-// //     database: ''
+// //     host: 'localhost',
+// //     user: 'root',
+// //     password: 'Osh@2000',
+// //     database: 'helpdesk'
 // // });
 
 // // // Connect to MySQL database
@@ -371,10 +371,10 @@ app.use(cors({
 
 // MySQL connection configuration
 const connection = mysql.createConnection({
-    host: '',
-    user: '',
-    password: '',
-    database: ''
+    host: 'localhost',
+    user: 'root',
+    password: 'Osh@2000',
+    database: 'helpdesk'
 });
 
 // Connect to MySQL database
