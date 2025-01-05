@@ -360,11 +360,11 @@ const mysql = require('mysql2');
 const cors = require('cors');
 
 const app = express();
-const port = 5000;
+const port = 5000; 
 
 // Enable CORS for all routes
 app.use(cors({
-    origin: 'http://localhost:3000', // React app's origin
+    origin: 'http://localhost:3001', // React app's origin
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -614,6 +614,7 @@ app.get('/api/peak-hours', (req, res) => {
         res.json(results);
     });
 });
+
 
 // Start the server
 app.listen(port, () => {
