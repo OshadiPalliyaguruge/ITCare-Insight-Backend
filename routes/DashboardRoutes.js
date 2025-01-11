@@ -3,6 +3,19 @@ const router = express.Router();
 const connection = require('../dbConnection');
 const Sentiment = require('sentiment');
 const sentiment = new Sentiment();
+const axios = require('axios'); // Axios is used for HTTP requests
+
+
+// Proxy predictions to Python Flask service
+router.post('/predict', async (req, res) => {
+  try {
+    const response = await axios.post('http://127.0.0.1:5001/predict', req.body);
+    res.json(response.data); // Return the prediction to the frontend
+  } catch (error) {
+    console.error('Error communicating with prediction service:', error.message);
+    res.status(500).json({ error: 'Prediction service is unavailable.' });
+  }
+});
 
 // Dashboard data endpoint
 router.get('/data', (req, res) => {
@@ -174,25 +187,26 @@ router.get('/status-data', (req, res) => {
     });
 });
 
-// Problems and solutions
+// Problems and solutions endpoint
 router.get('/problems-solutions', (req, res) => {
-    const query = `
-        SELECT Summary AS question, 
-               MAX(Resolution) AS answer 
-        FROM incident_reports 
-        GROUP BY Summary 
-        ORDER BY COUNT(*) DESC 
-        LIMIT 10
-    `;
-    connection.query(query, (error, results) => {
-        if (error) {
-            console.error('Error fetching problems and solutions:', error);
-            res.status(500).send('Server Error');
-            return;
-        }
-        res.json(results);
-    });
+  const query = `
+      SELECT Summary AS question, 
+             MAX(Resolution) AS answer 
+      FROM incident_reports 
+      GROUP BY Summary 
+      ORDER BY COUNT(*) DESC 
+      LIMIT 10
+  `;
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error fetching problems and solutions:', error);
+      res.status(500).send('Server Error');
+      return;
+    }
+    res.json(results);
+  });
 });
+
 
 // Data quality insights
 router.get('/data-quality', (req, res) => {
