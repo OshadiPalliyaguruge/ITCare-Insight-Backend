@@ -367,6 +367,65 @@ router.get('/peak-months', (req, res) => {
 });
 
 
+router.get('/options', (req, res) => {
+    const queries = {
+        priorities: 'SELECT DISTINCT Priority FROM incident_reports ORDER BY Priority',
+        organizations: 'SELECT DISTINCT Organization FROM incident_reports ORDER BY Organization',
+        departments: 'SELECT DISTINCT Department FROM incident_reports ORDER BY Department'
+    };
+
+    const options = {};
+
+    // Execute all queries
+    let completed = 0;
+    Object.entries(queries).forEach(([key, query]) => {
+        connection.query(query, (error, results) => {
+            if (error) {
+                console.error(`Error fetching ${key}:`, error);
+                options[key] = [];
+            } else {
+                options[key] = results.map(row => row[Object.keys(row)[0]]);
+            }
+            completed++;
+
+            // Send response only after all queries are completed
+            if (completed === Object.keys(queries).length) {
+                res.json(options);
+            }
+        });
+    });
+});
+
+// Endpoint for solving problems by finding matching questions
+router.post('/problems-solutions', (req, res) => {
+    const { question } = req.body; // Get question from the request body
+  
+    // Perform SQL query to find matching problems and solutions
+    const query = `
+      SELECT Summary AS question, MAX(Resolution) AS answer 
+      FROM incident_reports 
+      WHERE Summary LIKE ? 
+      GROUP BY Summary 
+      ORDER BY COUNT(*) DESC 
+      LIMIT 1
+    `;
+    
+    // Use `LIKE` operator for partial matching with the question
+    connection.query(query, [`%${question}%`], (error, results) => {
+      if (error) {
+        console.error('Error fetching solution:', error);
+        return res.status(500).send('Server Error');
+      }
+  
+      // Return the first matched solution or an error message
+      if (results.length > 0) {
+        res.json({ answer: results[0].answer });
+      } else {
+        res.json({ answer: "Sorry, I couldn't find an answer to that." });
+      }
+    });
+  });
+  
 
 module.exports = router;
  
