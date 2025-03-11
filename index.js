@@ -30,7 +30,7 @@ const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const dashboardRoutes = require('./routes/dashboardRoutes');
+const dashboardRoutes = require('./routes/DashboardRoutes');
 
 // Load environment variables from .env file
 dotenv.config();
