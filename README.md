@@ -46,15 +46,14 @@ FRONTEND_URL=your_frontend_url(ex: http://localhost:3000)
 
 1. Clone the repo and enter the root directory:
    
-   ``` bash 
-   git clone <repo_url> && cd <repo_name>
+   ```bash 
+    git clone https://github.com/OshadiPalliyaguruge/ITCare-Insight-Backend.git && cd ITCare-Insight-Backend
    ```
    
 2. Install dependencies:
    
-   ``` bash 
+   ```bash 
    # Install Node.js dependencies
-   cd server
    npm install express socket.io cors dotenv sentiment axios mysql
    
    # Install Python dependencies for both ML and Q&A services
